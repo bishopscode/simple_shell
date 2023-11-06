@@ -1,4 +1,4 @@
-#include "custom_shell.h"
+#include "my_shell.h"
 
 /**
  * custom_input_buffer - Buffers chained commands in custom shell.
@@ -182,7 +182,8 @@ int custom_getline(custom_shell_info_t *info, char **pointer, size_t *length)
     current_position = k;
     position = new_position;
 
-    if (length) {
+    if (length)
+    {
         *length = size;
     }
 
