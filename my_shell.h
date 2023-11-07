@@ -13,26 +13,26 @@
 #include <errno.h>
 
 /* for read/write buffers */
-#define CUSTOM_READ_BUF_SIZE 1024
-#define CUSTOM_WRITE_BUF_SIZE 1024
-#define CUSTOM_BUF_FLUSH -1
+#define READ_BUF_SIZE 1024
+#define WRITE_BUF_SIZE 1024
+#define BUF_FLUSH -1
 
 /* for command chaining */
-#define CUSTOM_CMD_NORM	0
-#define CUSTOM_CMD_OR	1
-#define CUSTOM_CMD_AND	2
-#define CUSTOM_CMD_CHAIN	3
+#define CMD_NORM	0
+#define CMD_OR	1
+#define CMD_AND	2
+#define CMD_CHAIN	3
 
 /* for custom_convert_number() */
-#define CUSTOM_CONVERT_LOWERCASE	1
-#define CUSTOM_CONVERT_UNSIGNED	2
+#define CONVERT_LOWERCASE	1
+#define CONVERT_UNSIGNED	2
 
 /* 1 if using system getline() */
-#define CUSTOM_USE_GETLINE 0
-#define CUSTOM_USE_STRTOK 0
+#define USE_GETLINE 0
+#define USE_STRTOK 0
 
-#define CUSTOM_HIST_FILE	".custom_shell_history"
-#define CUSTOM_HIST_MAX	4096
+#define HIST_FILE	".custom_shell_history"
+#define HIST_MAX	4096
 
 extern char **environ;
 
@@ -156,7 +156,7 @@ void custom_ffree(char **);
 void *custom_realloc(void *, unsigned int, unsigned int);
 
 /* toem_memory.c */
-int custom_bfree(void **);
+int bfree(void **);
 
 /* toem_custom_utils.c */
 int custom_interactive(custom_shell_info_t *);
@@ -210,18 +210,18 @@ int custom_build_history_list(custom_info_t *info, char *buf, int linecount);
 int custom_renumber_history(custom_info_t *info);
 
 /* toem_lists.c */
-custom_list_t *custom_add_node(custom_list_t **, const char *, int);
-custom_list_t *custom_add_node_end(custom_list_t **, const char *, int);
-size_t custom_print_list_str(const custom_list_t *);
-int custom_delete_node_at_index(custom_list_t **, unsigned int);
-void custom_free_list(custom_list_t **);
+custom_list_t *add_node(custom_list_t **, const char *, int);
+custom_list_t *add_node_end(custom_list_t **, const char *, int);
+size_t print_list_str(const custom_list_t *);
+int delete_node_at_index(custom_list_t **, unsigned int);
+void free_list(custom_list_t **);
 
 /* toem_lists1.c */
-size_t custom_list_len(const custom_list_t *);
-char **custom_list_to_strings(custom_list_t *);
-size_t custom_print_list(const custom_list_t *);
-custom_list_t *custom_node_starts_with(custom_list_t *, char *, char);
-ssize_t custom_get_node_index(custom_list_t *, custom_list_t *);
+size_t list_len(const custom_list_t *);
+char **list_to_strings(custom_list_t *);
+size_t print_list(const custom_list_t *);
+custom_list_t *node_starts_with(custom_list_t *, char *, char);
+ssize_t get_node_index(custom_list_t *, custom_list_t *);
 
 /* toem_vars.c */
 int custom_is_chain(custom_info_t *, char *, size_t *);

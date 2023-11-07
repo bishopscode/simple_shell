@@ -91,7 +91,7 @@ int custom_print_d(int integer, int fd)
  * 
  * @Return: The converted string.
  */
-char *custom_convert_numbers(long int number, int base, int flags) 
+char *custom_convert_number(long int number, int base, int flags) 
 {
 	static char *array;
 	static char buffer[50];
