@@ -1,0 +1,57 @@
+#!/bin/bash
+Who designed and implemented the original Unix operating system?
+The original Unix operating system was designed and implemented by Ken Thompson, Dennis Ritchie, and others at Bell Labs in the late 1960s and early 1970s.
+
+Who wrote the first version of the UNIX shell?
+The first version of the UNIX shell, known as the Thompson shell (sh), was written by Ken Thompson.
+
+Who invented the B programming language (the direct predecessor to the C programming language)?
+The B programming language was developed by Ken Thompson at Bell Labs. It was a precursor to the C programming language, which was also developed at Bell Labs by Dennis Ritchie.
+
+Who is Ken Thompson?
+Ken Thompson is a computer scientist and one of the key figures in the development of Unix, the C programming language, and many other important contributions to computer science. He is known for his pioneering work at Bell Labs and his significant influence on the field of operating systems and programming languages.
+
+How does a shell work?
+A shell is a command-line interface that acts as a user's primary means of interacting with an operating system. It takes user input (commands) and interprets them, then executes the corresponding system programs or scripts. The shell can manage processes, handle input/output, and provide a way for users to interact with the system.
+
+What is a pid and a ppid?
+
+PID (Process ID): A PID is a unique identifier assigned to each running process in an operating system. It is used to track and manage processes.
+PPID (Parent Process ID): PPID is the PID of the parent process that spawned the current process. It helps establish a parent-child relationship between processes.
+How to manipulate the environment of the current process?
+You can manipulate the environment of the current process in a Unix-like system using environment variables. These variables are typically set and managed with commands like export, set, or by directly modifying the environment variables in a script or shell session.
+
+What is the difference between a function and a system call?
+
+Function: A function is a block of code that can be called and executed within a program. Functions are part of the program itself and execute in user space.
+System Call: A system call is a request made by a user-level program to the kernel of the operating system to perform privileged operations, such as I/O, process management, or memory management. System calls allow user programs to interact with the underlying hardware and kernel services.
+How to create processes?
+You can create processes in a Unix-like system using system calls like fork and exec. The fork system call is used to create a new process, and exec is used to replace the current process with a new one.
+
+What are the three prototypes of main?
+In C, the main function can have one of the following three prototypes:
+
+int main(void): Takes no command-line arguments.
+int main(int argc, char *argv[]): Takes command-line arguments as an array of strings.
+int main(int argc, char *argv[], char *envp[]): Takes command-line arguments and environment variables.
+How does the shell use the PATH to find the programs?
+The shell uses the PATH environment variable to locate executable programs. It searches directories listed in the PATH variable in the order they appear, and when you enter a command, it looks for the executable in those directories. If it finds a matching executable, it launches it.
+
+How to execute another program with the execve system call?
+The execve system call is used to execute another program. You provide the path to the program as an argument, along with an array of command-line arguments and an array of environment variables. Here's a basic example in C:
+
+c
+Copy code
+#include <unistd.h>
+
+int main() {
+    char *argv[] = { "/bin/ls", "-l", NULL };
+    char *envp[] = { "PATH=/bin", NULL };
+    execve("/bin/ls", argv, envp);
+    return 0; // This is never reached if execve succeeds.
+}
+How to suspend the execution of a process until one of its children terminates?
+You can use the wait or waitpid system calls to suspend the execution of a process until one of its child processes terminates. These system calls allow a parent process to wait for the status of a specific child process or any child process.
+
+What is EOF ("end-of-file")?
+EOF is a special character or condition that indicates the end of a file or the end of an input stream. In C and many other programming languages, it's represented as a symbolic constant often defined as -1. When reading from an input stream, encountering EOF typically means there is no more data to read
