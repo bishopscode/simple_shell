@@ -1,76 +1,75 @@
 #include "my_shell.h"
 
 /**
- * init_custom_info - Initialize custom_shell_info_t struct.
+ * custom_clear_info - Initialize custom_shell_info_t struct.
  * @info: Struct to initialize.
  */
-void init_custom_info(custom_shell_info_t *info)
+void custom_clear_info(custom_shell_info_t *info)
 {
-    info->custom_arg = NULL;
-    info->custom_args = NULL;
-    info->custom_path = NULL;
-    info->custom_argc = 0;
+    info->arg = NULL;
+    info->args = NULL;
+    info->path = NULL;
+    info->argc = 0;
 }
 
 /**
- * fill_custom_info - Fill custom_shell_info_t struct with custom arguments.
+ * custom_set_info - Setting custom_shell_info_t struct with custom arguments.
  * @info: Struct to fill.
- * @custom_argv: Custom argument vector.
+ * @av: Custom argument vector.
  */
-void fill_custom_info(custom_shell_info_t *info, char **custom_argv)
+void custom_set_info(custom_shell_info_t *info, char **av)
 {
-    int i = 0;
+	int i = 0;
 
-    info->custom_name = custom_argv[0];
+	info->fname = av[0];
+	if (info->arg)
+	{
+		info->argv = custom_strtow(info->arg, " \t");
+		if (!info->argv)
+		{
 
-    if (info->custom_arg) 
-    {
-        info->custom_args = custom_strtow(info->custom_arg, " \t");
-        if (!info->custom_args) 
-        {
-            info->custom_args = custom_malloc(sizeof(char *) * 2);
-            if (info->custom_args)
-            {
-                info->custom_args[0] = custom_strdup(info->custom_arg);
-                info->custom_args[1] = NULL;
-            }
-        }
+			info->argv = malloc(sizeof(char *) * 2);
+			if (info->argv)
+			{
+				info->argv[0] = custom_strdup(info->arg);
+				info->argv[1] = NULL;
+			}
+		}
+		for (i = 0; info->argv && info->argv[i]; i++)
+			;
+		info->argc = i;
 
-        for (i = 0; info->custom_args && info->custom_args[i]; i++)
-            ;
-        info->custom_argc = i;
-
-        custom_replace_alias(info);
-        custom_replace_vars(info);
-    }
+		replace_alias(info);
+		replace_vars(info);
+	}
 }
 
 /**
- * cleanup_custom_info - Free memory associated with custom_shell_info_t struct.
+ * custom_free_info - Free memory associated with custom_shell_info_t struct.
  * @info: Struct to clean up.
- * @free_all: true if all fields should be freed.
+ * @all: true if all fields should be freed.
  */
-void cleanup_custom_info(custom_shell_info_t *info, int free_all)
+void custom_free_info(custom_shell_info_t *info, int all)
 {
-    custom_ffree(info->custom_args);
-    info->custom_args = NULL;
-    info->custom_path = NULL;
+    ffree(info->argv);
+    info->argv = NULL;
+    info->path = NULL;
 
-    if (free_all)
+    if (all)
     {
-        if (!info->custom_cmd_buf)
-            custom_free(info->custom_arg);
-        if (info->custom_env)
-            custom_free_list(&(info->custom_env));
-        if (info->custom_history)
-            custom_free_list(&(info->custom_history));
-        if (info->custom_alias)
-            custom_free_list(&(info->custom_alias));
-        custom_ffree(info->custom_environ);
-        info->custom_environ = NULL;
-        custom_bfree((void **)info->custom_cmd_buf);
+        if (!info->cmd_buf)
+            free(info->arg);
+        if (info->env)
+            free_list(&(info->env));
+        if (info->history)
+            free_list(&(info->history));
+        if (info->alias)
+            free_list(&(info->alias));
+        custom_ffree(info->environ);
+        info->environ = NULL;
+        bfree((void **)info->cmd_buf);
         if (info->custom_readfd > 2)
-            custom_close(info->custom_readfd);
-        custom_putchar(CUSTOM_BUF_FLUSH);
+            close(info->readfd);
+        custom_putchar(BUF_FLUSH);
     }
 }

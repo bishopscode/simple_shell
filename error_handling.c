@@ -1,88 +1,85 @@
 #include "my_shell.h"
 
 /**
- * custom_print_error - Print an error message to the standard error.
- * @error_message: The error message to be printed.
+ *custom_eputs - prints an input string
+ * @str: the string to be printed
+ *
+ * Return: Nothing
  */
-void custom_print_error(char *error_message)
+void custom_eputs(char *str)
 {
-    int index = 0;
+	int i = 0;
 
-    if (!error_message)
-        return;
-
-    while (error_message[index] != '\0')
-    {
-        custom_write_error_char(error_message[index]);
-        index++;
-    }
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		custom_eputchar(str[i]);
+		i++;
+	}
 }
 
 /**
- * custom_write_error_char - Write a character to the standard error.
- * @param character: The character to be written.
- * 
- * @Return: 1 on success, -1 on error.
+ * custom_eputchar - writes the character c to stderr
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-int custom_write_error_char(char character)
+int custom_eputchar(char c)
 {
-    static int buffer_index;
-    static char error_buffer[ERROR_WRITE_BUFFER_SIZE];
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
 
-    if (character == ERROR_BUFFER_FLUSH || buffer_index >= ERROR_WRITE_BUFFER_SIZE)
-    {
-        write(STDERR_FILENO, error_buffer, buffer_index);
-        buffer_index = 0;
-    }
-
-    if (character != ERROR_BUFFER_FLUSH)
-        error_buffer[buffer_index++] = character;
-
-    return (1);
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(2, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
 
 /**
- * custom_write_to_fd - Write a character to a given file descriptor.
- * @character: The character to be written.
- * @fd: The file descriptor to write to.
- * 
- * @Return: 1 on success, -1 on error.
+ * custom_putfd - writes the character c to given fd
+ * @c: The character to print
+ * @fd: The filedescriptor to write to
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-int custom_write_to_fd(char character, int fd)
+int custom_putfd(char c, int fd)
 {
-    static int buffer_index;
-    static char write_buffer[ERROR_WRITE_BUFFER_SIZE];
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
 
-    if (character == ERROR_BUFFER_FLUSH || buffer_index >= ERROR_WRITE_BUFFER_SIZE)
-    {
-        write(fd, write_buffer, buffer_index);
-        buffer_index = 0;
-    }
-
-    if (character != ERROR_BUFFER_FLUSH)
-        write_buffer[buffer_index++] = character;
-
-    return (1);
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(fd, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
 
 /**
- * custom_puts_to_fd - Write a string to a given file descriptor.
- * @str: The string to be written.
- * @fd: The file descriptor to write to.
- * 
- * @Return The number of characters written.
+ *custom_putsfd - prints an input string
+ * @str: the string to be printed
+ * @fd: the filedescriptor to write to
+ *
+ * Return: the number of chars put
  */
-int custom_puts_to_fd(char *str, int fd)
+int custom_putsfd(char *str, int fd)
 {
-    int char_count = 0;
+	int i = 0;
 
-    if (!str)
-        return (0);
-
-    while (*str)
-    {
-        char_count += custom_write_to_fd(*str++, fd);
-    }
-
-    return (char_count);
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		i += custom_putfd(*str++, fd);
+	}
+	return (i);
 }

@@ -1,14 +1,14 @@
 #include "my_shell.h"
 
 /**
- * custom_copy_string - Copy a string to another string with a specified length.
+ * custom_strcpy - Copy a string to another string with a specified length.
  * @destination: The destination string.
  * @source: The source string.
  * @length: The maximum number of characters to copy.
  * 
  * @Return: The pointer to the destination string.
  */
-char *custom_copy_string(char *destination, char *source, int length)
+char *custom_strcpy(char *destination, char *source, int length)
 {
     int source_index, destination_index;
     char *result = destination;
@@ -35,14 +35,14 @@ char *custom_copy_string(char *destination, char *source, int length)
 }
 
 /**
- * custom_concatenate_strings - Concatenate two strings with a specified length.
+ * custom_strncat - Concatenate two strings with a specified length.
  * @first_string: The first string.
  * @second_string: The second string.
  * @length: The maximum number of bytes to use.
  * 
  * @Return: The pointer to the concatenated string.
  */
-char *custom_concatenate_strings(char *first_string, char *second_string, int length)
+char *custom_strncat(char *first_string, char *second_string, int length)
 {
     int first_index, second_index;
     char *result = first_string;
@@ -70,13 +70,13 @@ char *custom_concatenate_strings(char *first_string, char *second_string, int le
 }
 
 /**
- * custom_find_character - Locate a character in a string.
+ * custom_strchr - Locate a character in a string.
  * @string: The string to be searched.
  * @character: The character to look for.
  * 
  * @Return: A pointer to the first occurrence of the character in the string.
  */
-char *custom_find_character(char *string, char character)
+char *custom_strchr(char *string, char character)
 {
     do
     {

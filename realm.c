@@ -1,14 +1,14 @@
 #include "my_shell.h"
 
 /**
- * custom_fill_memory - Fills memory with a constant byte.
+ * custom_memset - Fills memory with a constant byte.
  * @memory: The pointer to the memory area.
  * @byte: The byte to fill the memory with.
  * @size: The number of bytes to be filled.
  *
  * Return: (memory) a pointer to the filled memory area.
  */
-char *custom_fill_memory(char *memory, char byte, unsigned int size)
+char *custom_memset(char *memory, char byte, unsigned int size)
 {
     unsigned int i;
 
@@ -18,10 +18,10 @@ char *custom_fill_memory(char *memory, char byte, unsigned int size)
 }
 
 /**
- * custom_free_string_array - Frees an array of strings.
+ * custom_ffree - Frees an array of strings.
  * @str_array: The array of strings to free.
  */
-void custom_free_string_array(char **str_array)
+void custom_ffree(char **str_array)
 {
     char **strings = str_array;
 
@@ -33,14 +33,14 @@ void custom_free_string_array(char **str_array)
 }
 
 /**
- * custom_reallocate_memory - Reallocates a block of memory.
+ * custom_realloc - Reallocates a block of memory.
  * @old_memory: Pointer to the previously allocated block.
  * @old_size: Size of the previous block in bytes.
  * @new_size: Size of the new block in bytes.
  *
  * Return: Pointer to the new block of memory.
  */
-void *custom_reallocate_memory(void *old_memory, unsigned int old_size, unsigned int new_size)
+void *custom_realloc(void *old_memory, unsigned int old_size, unsigned int new_size)
 {
     char *new_memory;
 

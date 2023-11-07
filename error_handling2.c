@@ -1,12 +1,12 @@
 #include "my_shell.h"
 
 /**
- * custom_str_to_int - Convert a string to an integer.
+ * custom_erratoi - Convert a string to an integer.
  * @str: The string to be converted.
  * 
  * @Return: The converted integer, or -1 on error.
  */
-int custom_str_to_int(char *str)
+int custom_erratoi(char *str)
 {
     int index = 0;
     unsigned long int result = 0;
@@ -32,92 +32,93 @@ int custom_str_to_int(char *str)
 }
 
 /**
- * custom_print_error_message - Print an error message.
+ * custom_print_error - Print an error message.
  * @info: The parameter and return information structure.
  * @error_message: The error message to print.
  */
-void custom_print_error_message(custom_shell_info_t *info, char *error_message)
+void custom_print_error(custom_shell_info_t *info, char *error_message)
 {
-    custom_write_string(info->program_name);
-    custom_write_string(": ");
-    custom_write_integer(info->line_number, STDERR_FILENO);
-    custom_write_string(": ");
-    custom_write_string(info->command_name);
-    custom_write_string(": ");
-    custom_write_string(error_message);
+    custom_eputs(info->program_name);
+    custom_eputs(": ");
+    custom_print_d(info->line_number, STDERR_FILENO);
+    custom_eputs(": ");
+    custom_eputs(info->command_name);
+    custom_eputs(": ");
+    custom_eputs(error_message);
 }
 
 /**
- * custom_write_integer - Write an integer to the given file descriptor.
+ * custom_print_d - Write an integer to the given file descriptor.
  * @integer: The integer to be written.
  * @fd: The file descriptor to write to.
  */
-void custom_write_integer(int integer, int fd)
+int custom_print_d(int integer, int fd)
 {
-    char character_buffer[ERROR_BUFFER_SIZE];
-    int buffer_index = 0;
+	int (*__putchar)(char) = custom_putchar;
+	int i, count = 0;
+	unsigned int _abs_, current;
 
-    if (integer < 0)
-    {
-        character_buffer[buffer_index++] = '-';
-        integer = -integer;
-    }
+	if (fd == STDERR_FILENO)
+		__putchar = custom_eputchar;
+	if (integer < 0)
+	{
+		_abs_ = -integer;
+		__putchar('-');
+		count++;
+	}
+	else
+		_abs_ = integer;
+	current = _abs_;
+	for (i = 1000000000; i > 1; i /= 10)
+	{
+		if (_abs_ / i)
+		{
+			__putchar('0' + current / i);
+			count++;
+		}
+		current %= i;
+	}
+	__putchar('0' + current);
+	count++;
 
-    if (integer == 0)
-    {
-        character_buffer[buffer_index++] = '0';
-    } else
-    {
-        while (integer > 0)
-        {
-            character_buffer[buffer_index++] = '0' + (integer % 10);
-            integer /= 10;
-        }
-    }
-
-    for (buffer_index--; buffer_index >= 0; buffer_index--)
-    {
-        custom_write_character(character_buffer[buffer_index], fd);
-    }
+	return (count);
 }
-
 /**
- * custom_convert_to_string - Convert a number to a string in the given base.
+ * custom_convert_numbers - Convert a number to a string in the given base.
  * @number: The number to be converted.
  * @base: The base for conversion.
  * @flags: Flags for conversion.
  * 
  * @Return: The converted string.
  */
-char *custom_convert_to_string(long int number, int base, int flags) 
+char *custom_convert_numbers(long int number, int base, int flags) 
 {
-    static char conversion_array[CONVERSION_BUFFER_SIZE];
-    static char conversion_buffer[CONVERSION_BUFFER_SIZE];
-    char sign = 0;
-    char *ptr;
-    unsigned long n = number;
+	static char *array;
+	static char buffer[50];
+	char sign = 0;
+	char *ptr;
+	unsigned long n = number;
 
-    if (!(flags & CONVERT_UNSIGNED) && number < 0)
+	if (!(flags & CONVERT_UNSIGNED) && number < 0)
+	{
+		n = -number;
+		sign = '-';
+
+	}
+	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
+	ptr = &buffer[49];
+	*ptr = '\0';
+
+	do	
     {
-        n = -number;
-        sign = '-';
-    }
+		*--ptr = array[n % base];
+		n /= base;
+	} while (n != 0);
 
-    ptr = &conversion_buffer[CONVERSION_BUFFER_SIZE - 1];
-    *ptr = '\0';
-
-    do
-    {
-        *--ptr = conversion_array[n % base];
-        n /= base;
-    } while (n != 0);
-
-    if (sign)
-        *--ptr = sign;
-
-    return (ptr);
+	if (sign)
+		*--ptr = sign;
+	return (ptr);
 }
-
 /**
  * custom_remove_comments - Replace the first '#' character with '\0' in the string.
  * @buffer: The address of the string to modify.

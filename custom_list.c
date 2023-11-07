@@ -1,21 +1,21 @@
 #include "my_shell.h"
 
 /**
- * custom_add_list_node - Add a node to the start of the custom list.
+ * add_node - Add a node to the start of the custom list.
  * @head: Address of the pointer to the head node.
  * @data: Data field of the node.
  * @index: Node index used for history.
  *
  * Return: Pointer to the new head of the list.
  */
-custom_list_t *custom_add_list_node(custom_list_t **head, const char *data, int index)
+custom_list_t *add_node(custom_list_t **head, const char *data, int index)
 {
     custom_list_t *new_head;
 
     if (!head)
         return (NULL);
 
-    new_head = custom_malloc(sizeof(custom_list_t));
+    new_head = malloc(sizeof(custom_list_t));
 
     if (!new_head)
         return (NULL);
@@ -40,14 +40,14 @@ custom_list_t *custom_add_list_node(custom_list_t **head, const char *data, int 
 }
 
 /**
- * custom_add_list_node_end - Add a node to the end of the custom list.
+ * add_node_end - Add a node to the end of the custom list.
  * @head: Address of the pointer to the head node.
  * @data: Data field of the node.
  * @index: Node index used for history.
  *
  * Return: Pointer to the new end of the list.
  */
-custom_list_t *custom_add_list_node_end(custom_list_t **head, const char *data, int index)
+custom_list_t *add_node_end(custom_list_t **head, const char *data, int index)
 {
     custom_list_t *new_node, *node;
 
@@ -88,12 +88,12 @@ custom_list_t *custom_add_list_node_end(custom_list_t **head, const char *data, 
 }
 
 /**
- * custom_print_list_data - Print only the data element of a custom list.
+ * print_list_str - Print only the data element of a custom list.
  * @head: Pointer to the first node.
  *
  * Return: Size of the list.
  */
-size_t custom_print_list_data(const custom_list_t *head)
+size_t print_list_str(const custom_list_t *head)
 {
     size_t size = 0;
 
@@ -109,13 +109,13 @@ size_t custom_print_list_data(const custom_list_t *head)
 }
 
 /**
- * custom_delete_node_at_index - Delete a node at a given index in the custom list.
+ * delete_node_at_index - Delete a node at a given index in the custom list.
  * @head: Address of the pointer to the first node.
  * @index: Index of the node to delete.
  *
  * Return: 1 on success, 0 on failure.
  */
-int custom_delete_node_at_index(custom_list_t **head, unsigned int index)
+int delete_node_at_index(custom_list_t **head, unsigned int index)
 {
     custom_list_t *node, *prev_node;
     unsigned int i = 0;
@@ -127,8 +127,8 @@ int custom_delete_node_at_index(custom_list_t **head, unsigned int index)
     {
         node = *head;
         *head = (*head)->next;
-        custom_free(node->data);
-        custom_free(node);
+        free(node->data);
+        free(node);
         return (1);
     }
 
@@ -139,8 +139,8 @@ int custom_delete_node_at_index(custom_list_t **head, unsigned int index)
         if (i == index)
         {
             prev_node->next = node->next;
-            custom_free(node->data);
-            custom_free(node);
+            free(node->data);
+            free(node);
             return (1);
         }
 

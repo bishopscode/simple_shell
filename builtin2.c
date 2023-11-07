@@ -1,120 +1,111 @@
 #include "my_shell.h"
 
 /**
- * custom_history - Display the command history with line numbers.
+ * custom_myhistory - Display the command history with line numbers.
  * @info: Structure containing potential arguments and shell information.
  *
  * @Return: Always 0
  */
-int custom_history(custom_shell_info_t *info)
+int custom_myhistory(custom_shell_info_t *info)
 {
-    display_command_history(info->history);
+    custom_print_list(info->history);
     return (0);
 }
 
 /**
- * remove_alias - Remove an alias from the alias list.
+ * custom_unset_alias - Remove an alias from the alias list.
  * @info: Structure containing potential arguments and shell information.
- * @alias_name: The name of the alias to remove.
+ * @str: The name of the alias to remove.
  *
  * @Return: 0 on success, 1 on error
  */
-int remove_alias(custom_shell_info_t *info, char *alias_name)
+int custom_unset_alias(custom_shell_info_t *info, char *str)
 {
-    char *equal_sign, tmp_char;
-    int result;
+	char *p, c;
+	int ret;
 
-    equal_sign = _strchr(alias_name, '=');
-    if (!equal_sign)
-        return (1);
-    
-    tmp_char = *equal_sign;
-    *equal_sign = '\0';
-    result = delete_alias_node(info, alias_name);
-    *equal_sign = tmp_char;
-    
-    return (result);
+	p = custom_strchr(str, '=');
+	if (!p)
+		return (1);
+	c = *p;
+	*p = 0;
+	ret = delete_node_at_index(&(info->alias),
+		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	*p = c;
+	return (ret);
 }
-
 /**
- * add_alias - Add an alias to the alias list.
+ * custom_set_alias - Add an alias to the alias list.
  * @info: Structure containing potential arguments and shell information.
- * @alias_str: The alias string to add.
+ * @str: The alias string to add.
  * 
  * @Return: 0 on success, 1 on error
  */
-int add_alias(custom_shell_info_t *info, char *alias_str)
+int custom_set_alias(custom_shell_info_t *info, char *str)
 {
-    char *equal_sign;
+	char *p;
 
-    equal_sign = _strchr(alias_str, '=');
-    if (!equal_sign)
-        return (1);
-    
-    if (!*++equal_sign)
-        return (remove_alias(info, alias_str));
-    
-    remove_alias(info, alias_str);
-    return (add_alias_node(&(info->aliases), alias_str) == NULL);
+	p = custom_strchr(str, '=');
+	if (!p)
+		return (1);
+	if (!*++p)
+		return (unset_alias(info, str));
+
+	custom_unset_alias(info, str);
+	return (add_node_end(&(info->alias), str, 0) == NULL);
 }
-
 /**
- * print_single_alias - Print a single alias from the alias list.
- * @alias_node: The alias node to print.
+ * custom_print_alias - Print a single alias from the alias list.
+ * @node: The alias node to print.
  * 
  * @Return: 0 on success, 1 on error
  */
-int print_single_alias(list_t *alias_node)
+int custom_print_alias(list_t *node)
 {
-    char *equal_sign = NULL, *alias_value = NULL;
+	char *p = NULL, *a = NULL;
 
-    if (alias_node)
-    {
-        equal_sign = _strchr(alias_node->str, '=');
-        for (alias_value = alias_node->str; alias_value <= equal_sign; alias_value++)
-            _putchar(*alias_value);
-        _putchar('\'');
-        _puts(equal_sign + 1);
-        _puts("'\n");
-        return (0);
-    }
-    return (1);
+	if (node)
+	{
+		p = custom_strchr(node->str, '=');
+		for (a = node->str; a <= p; a++)
+			custom_putchar(*a);
+		custom_putchar('\'');
+		custom_puts(p + 1);
+		custom_puts("'\n");
+		return (0);
+	}
+	return (1);
 }
-
 /**
- * custom_alias - Manage aliases for the custom shell.
+ * custom_myalias - Manage aliases for the custom shell.
  * @info: Structure containing potential arguments and shell information.
  * 
  * @Return: Always 0
  */
-int custom_alias(custom_shell_info_t *info)
+int custom_myalias(custom_shell_info_t *info)
 {
-    int i = 0;
-    char *equal_sign = NULL;
-    list_t *alias_node = NULL;
+	int i = 0;
+	char *p = NULL;
+	list_t *node = NULL;
 
-    if (info->argc == 1)
-    {
-        alias_node = info->aliases;
-        while (alias_node)
-        {
-            print_single_alias(alias_node);
-            alias_node = alias_node->next;
-        }
-        return (0);
-    }
+	if (info->argc == 1)
+	{
+		node = info->alias;
+		while (node)
+		{
+			custom_print_alias(node);
+			node = node->next;
+		}
+		return (0);
+	}
+	for (i = 1; info->argv[i]; i++)
+	{
+		p = _strchr(info->argv[i], '=');
+		if (p)
+			custom_set_alias(info, info->argv[i]);
+		else
+			custom_print_alias(node_starts_with(info->alias, info->argv[i], '='));
+	}
 
-    for (i = 1; info->argv[i]; i++)
-    {
-        equal_sign = _strchr(info->argv[i], '=');
-        if (equal_sign)
-        {
-            add_alias(info, info->argv[i]);
-        } else
-        {
-            print_single_alias(find_alias_with_prefix(info->aliases, info->argv[i], '='));
-        }
-    }
-
-    return (0);
+	return (0);
 }

@@ -1,13 +1,13 @@
 #include "my_shell.h"
 
 /**
- * custom_tokenizer - splits a string into words. Repeated delimiters are ignored
+ * custom_strtow - splits a string into words. Repeated delimiters are ignored
  * @input_string: the input string
  * @delimiter_string: the delimiter string
  *
  * Return: a pointer to an array of strings, or NULL on failure
  */
-char **custom_tokenizer(char *input_string, char *delimiter_string)
+char **custom_strtow(char *input_string, char *delimiter_string)
 {
 	int i, j, k, m, num_tokens = 0;
 	char **tokens;
@@ -50,13 +50,13 @@ char **custom_tokenizer(char *input_string, char *delimiter_string)
 }
 
 /**
- * custom_tokenizer_v2 - splits a string into words using a specified delimiter
+ * custom_strtow2- splits a string into words using a specified delimiter
  * @input_string: the input string
  * @delimiter: the delimiter character
  *
  * Return: a pointer to an array of strings, or NULL on failure
  */
-char **custom_tokenizer_v2(char *input_string, char delimiter)
+char **custom_strtow2(char *input_string, char delimiter)
 {
 	int i, j, k, m, num_tokens = 0;
 	char **tokens;

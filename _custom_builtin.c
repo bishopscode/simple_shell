@@ -1,118 +1,98 @@
 #include "my_shell.h"
 
 /**
- * custom_exit - Exit the custom shell
+ * custom_myexit - Exit the custom shell
  * @info: Structure containing potential arguments and shell information.
  *
  * Return: Exits the shell given an exit status(0 if info->argv[0] != "exit").
  */
-int custom_exit(custom_shell_info_t *info)
-int custom_exit(custom_shell_info_t *info)
+int custom_myexit(custom_shell_info_t *info)
 {
-	int exit_status;
+	int exitchecker;
 
-	if (info->argv[1])
+	if (info->argv[1])  /* If there is an exit arguement */
 	{
-	exit_status = custom_atoi(info->argv[1]);
-	if (exit_status == -1)
-	{
-		info->status = 2;
-		print_error(info, "Illegal number: ");
-		_eputs(info->argv[1]);
-		_eputchar('\n');
-		return (1);
-	}
-	info->err_num = exit_status;
-	return (-2);
+		exitchecker = custom_erratoi(info->argv[1]);
+		if (exitchecker == -1)
+		{
+			info->status = 2;
+			custom_print_error(info, "Illegal number: ");
+			custom_eputs(info->argv[1]);
+			custom_eputchar('\n');
+			return (1);
+		}
+		info->err_num = custom_erratoi(info->argv[1]);
+		return (-2);
 	}
 	info->err_num = -1;
 	return (-2);
 }
 
 /**
- * Handle_cd - Handles "cd" operation and update environment variables.
- * @info: Structure containing potential arguments and shell information.
- * @buffer: A character buffer for storing the current directory.
- * @new_dir: The new directory to change to.
- *
- * Return: 0 if successful, 1 if there's an error.
+ * custom_mycd - changes the current directory of the process
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: Always 0
  */
-static int handle_cd(custom_shell_info_t *info, char *buffer, char *new_dir)
+int custom_mycd(custom_shell_info_t *info)
 {
-	int chdir_ret = chdir(new_dir);
+	char *s, *dir, buffer[1024];
+	int chdir_ret;
 
-	if (chdir_ret == -1)
-	{
-		print_error(info, "can't cd to ");
-		_eputs(info->argv[1]);
-		_eputchar('\n');
-		return (1);
-	}
-
-	_setenv(info, "OLDPWD", _getenv(info, "PWD="));
-	_setenv(info, "PWD", getcwd(buffer, 1024));
-
-	return (0);
-}
-
-/**
- * custom_cd - Change the current directory of the custom shell process
- * @info: Structure containing potential arguments and shell information.
- *
- * Return: Always 0
- */
-int custom_cd(custom_shell_info_t *info)
-{
-	char *current_dir, *new_dir, buffer[1024];
-
-	current_dir = getcwd(buffer, 1024);
-	if (!current_dir)
-	{
-		_puts("TODO: >>getcwd failure emsg here<<\n");
-	}
-
+	s = getcwd(buffer, 1024);
+	if (!s)
+		custom_puts("TODO: >>getcwd failure emsg here<<\n");
 	if (!info->argv[1])
 	{
-		new_dir = _getenv(info, "HOME=");
-	if (!new_dir)
-	{
-		new_dir = _getenv(info, "PWD=");
+		dir = custom_getenv(info, "HOME=");
+		if (!dir)
+			chdir_ret = /* TODO: what should this be? */
+				chdir((dir = custom_getenv(info, "PWD=")) ? dir : "/");
+		else
+			chdir_ret = chdir(dir);
 	}
-	}
-	else if (_strcmp(info->argv[1], "-") == 0)
+	else if (custom_strcmp(info->argv[1], "-") == 0)
 	{
-	if (!_getenv(info, "OLDPWD="))
-	{
-		_puts(current_dir);
-		_putchar('\n');
-		return (1);
+		if (!custom_getenv(info, "OLDPWD="))
+		{
+			custom_puts(s);
+			custom_putchar('\n');
+			return (1);
+		}
+		custom_puts(custom_getenv(info, "OLDPWD=")), custom_putchar('\n');
+		chdir_ret = /* TODO: what should this be? */
+			chdir((dir = custom_getenv(info, "OLDPWD=")) ? dir : "/");
 	}
-	new_dir = _getenv(info, "OLDPWD=");
+	else
+		chdir_ret = chdir(info->argv[1]);
+	if (chdir_ret == -1)
+	{
+		custom_print_error(info, "can't cd to ");
+		custom_eputs(info->argv[1]), custom_eputchar('\n');
 	}
 	else
 	{
-	new_dir = info->argv[1];
+		custom_setenv(info, "OLDPWD", custom_getenv(info, "PWD="));
+		custom_setenv(info, "PWD", getcwd(buffer, 1024));
 	}
-
-	return (handle_cd(info, buffer, new_dir));
+	return (0);
 }
-
 /**
  * custom_help - Display help information for the custom shell
  * @info: Structure containing potential arguments and shell information.
  *
  *Return: Always 0
  */
-int custom_help(custom_shell_info_t *info)
+int custom_myhelp(custom_shell_info_t *info)
 {
 	char **arg_array;
 
 	arg_array = info->argv;
-	_puts("help call works. Function not yet implemented\n");
+	custom_puts("help call works. Function not yet implemented\n");
 
 	if (0)
 	{
-		_puts(*arg_array); /* Temp att_unused workaround */
+		custom_puts(*arg_array); /* Temp att_unused workaround */
 	}
 
 	return (0);

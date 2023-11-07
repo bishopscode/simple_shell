@@ -1,5 +1,5 @@
-#ifndef _SHELL_H_
-#define _SHELL_H_
+#ifndef MY_SHELL_H_
+#define MY_SHELL_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,16 +141,16 @@ char *custom_strdup(const char *);
 void custom_puts(char *);
 int custom_putchar(int);
 
-/* toem_exits.c */
+/* toem_string_manipulations.c */
 char *custom_strncpy(char *, char *, int);
 char *custom_strncat(char *, char *, int);
 char *custom_strchr(char *, char);
 
-/* toem_tokenizer.c */
+/* toem_tokenize.c */
 char **custom_strtow(char *, char *);
 char **custom_strtow2(char *, char);
 
-/* toem_realloc.c */
+/* toem_realm.c */
 char *custom_memset(char *, char, unsigned int);
 void custom_ffree(char **);
 void *custom_realloc(void *, unsigned int, unsigned int);
@@ -158,47 +158,47 @@ void *custom_realloc(void *, unsigned int, unsigned int);
 /* toem_memory.c */
 int custom_bfree(void **);
 
-/* toem_atoi.c */
-int custom_interactive(custom_info_t *);
+/* toem_custom_utils.c */
+int custom_interactive(custom_shell_info_t *);
 int custom_is_delim(char, char *);
 int custom_isalpha(int);
 int custom_atoi(char *);
 
-/* toem_errors1.c */
+/* toem_error_handling2.c */
 int custom_erratoi(char *);
-void custom_print_error(custom_info_t *, char *);
+void custom_print_error(custom_shell_info_t *, char *);
 int custom_print_d(int, int);
 char *custom_convert_number(long int, int, int);
 void custom_remove_comments(char *);
 
 /* toem_builtin.c */
-int custom_myexit(custom_info_t *);
-int custom_mycd(custom_info_t *);
-int custom_myhelp(custom_info_t *);
+int custom_myexit(custom_shell_info_t *);
+int custom_mycd(custom_shell_info_t *);
+int custom_myhelp(custom_shell_info_t *);
 
-/* toem_builtin1.c */
-int custom_myhistory(custom_info_t *);
-int custom_myalias(custom_info_t *);
+/* toem_builtin2.c */
+int custom_myhistory(custom_shell_info_t *);
+int custom_myalias(custom_shell_info_t *);
 
-/*toem_getline.c */
-ssize_t custom_get_input(custom_info_t *);
-int custom_getline(custom_info_t *, char **, size_t *);
+/*toem_input.c */
+ssize_t custom_get_input(custom_shell_info_t *);
+int custom_getline(custom_shell_info_t *, char **, size_t *);
 void custom_sigintHandler(int);
 
 /* toem_getinfo.c */
-void custom_clear_info(custom_info_t *);
-void custom_set_info(custom_info_t *, char **);
-void custom_free_info(custom_info_t *, int);
+void custom_clear_info(custom_shell_info_t *);
+void custom_set_info(custom_shell_info_t *, char **);
+void custom_free_info(custom_shell_info_t *, int);
 
 /* toem_environ.c */
-char *custom_getenv(custom_info_t *, const char *);
-int custom_myenv(custom_info_t *);
-int custom_mysetenv(custom_info_t *);
-int custom_myunsetenv(custom_info_t *);
-int custom_populate_env_list(custom_info_t *);
+char *custom_getenv(custom_shell_info_t *, const char *);
+int custom_myenv(custom_shell_info_t *);
+int custom_mysetenv(custom_shell_info_t *);
+int custom_myunsetenv(custom_shell_info_t *);
+int custom_populate_env_list(custom_shell_info_t *);
 
 /* toem_getenv.c */
-char **custom_get_environ(custom_info_t *);
+char **custom_get_environ(custom_shell_info_t *);
 int custom_unsetenv(custom_info_t *, char *);
 int custom_setenv(custom_info_t *, char *, char *);
 

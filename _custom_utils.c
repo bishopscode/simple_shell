@@ -1,28 +1,28 @@
 #include "my_shell.h"
 
 /**
- * check_if_interactive - Determine if the shell is in interactive mode
+ * custom_interactive - Determine if the shell is in interactive mode
  * @info: Pointer to the shell information structure
  *
  * Return: 1 if the shell is in interactive mode, 0 otherwise
  */
-int check_if_interactive(custom_shell_info_t *info)
+int custom_interactive(custom_shell_info_t *info)
 {
    /*
     *Checks if the std input is a term
     * and the read file descriptor is within the std range (0-2).
     */
-	return (isatty(STDIN_FILENO) && info->read_fd <= 2);
+	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
 
 /**
- * is_character_delimiter - Check if a character is a delimiter
+ * custom_is_delim - Check if a character is a delimiter
  * @c: The character to check
  * @delimiters: The string containing delimiters
  *
  * Return: 1 if the character is a delimiter, 0 if not
  */
-int is_character_delimiter(char c, char *delimiters)
+int custom_is_delim(char c, char *delimiters)
 {
 	while (*delimiters)
 	{
@@ -36,12 +36,12 @@ int is_character_delimiter(char c, char *delimiters)
 }
 
 /**
- * is_alphabetic - Check if a character is alphabetic
+ * custom_isalpha - Check if a character is alphabetic
  * @c: The character to check
  *
  * Return: 1 if the character is alphabetic, 0 if not
  */
-int is_alphabetic(int c)
+int custom_isalpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 	{
