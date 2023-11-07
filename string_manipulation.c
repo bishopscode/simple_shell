@@ -1,14 +1,14 @@
 #include "my_shell.h"
 
 /**
- * custom_strcpy - Copy a string to another string with a specified length.
+ * custom_strncpy - Copy a string to another string with a specified length.
  * @destination: The destination string.
  * @source: The source string.
  * @length: The maximum number of characters to copy.
  * 
  * @Return: The pointer to the destination string.
  */
-char *custom_strcpy(char *destination, char *source, int length)
+char *custom_strncpy(char *destination, char *source, int length)
 {
     int source_index, destination_index;
     char *result = destination;

@@ -1,14 +1,14 @@
 #include "my_shell.h"
 
 /**
- * is_custom_chain_delimiter - test if current char in buffer is a custom chain delimiter
+ * custom_is_chain - test if current char in buffer is a custom chain delimiter
  * @info: the parameter struct
  * @buffer: the char buffer
  * @position: address of current position in buffer
  *
  * Return: 1 if custom chain delimiter, 0 otherwise
  */
-int is_custom_chain_delimiter(info_t *info, char *buffer, size_t *position)
+int custom_is_chain(custom_shell_info_t *info, char *buffer, size_t *position)
 {
 	size_t j = *position;
 
@@ -16,18 +16,18 @@ int is_custom_chain_delimiter(info_t *info, char *buffer, size_t *position)
 	{
 		buffer[j] = 0;
 		j++;
-		info->cmd_buf_type = CUSTOM_CMD_OR;
+		info->cmd_buf_type = CMD_OR;
 	}
 	else if (buffer[j] == '&' && buffer[j + 1] == '&')
 	{
 		buffer[j] = 0;
 		j++;
-		info->cmd_buf_type = CUSTOM_CMD_AND;
+		info->cmd_buf_type = CMD_AND;
 	}
 	else if (buffer[j] == ';') /* found end of this command */
 	{
 		buffer[j] = 0; /* replace semicolon with null */
-		info->cmd_buf_type = CUSTOM_CMD_CHAIN;
+		info->cmd_buf_type = CMD_CHAIN;
 	}
 	else
 		return (0);
@@ -36,7 +36,7 @@ int is_custom_chain_delimiter(info_t *info, char *buffer, size_t *position)
 }
 
 /**
- * check_custom_chain - checks whether we should continue chaining based on last status
+ * custom_check_chain - checks whether we should continue chaining based on last status
  * @info: the parameter struct
  * @buffer: the char buffer
  * @position: address of current position in buffer
@@ -45,7 +45,7 @@ int is_custom_chain_delimiter(info_t *info, char *buffer, size_t *position)
  *
  * Return: Void
  */
-void check_custom_chain(info_t *info, char *buffer, size_t *position, size_t start_pos, size_t length)
+void custom_check_chain(custom_shell_info_t *info, char *buffer, size_t *position, size_t start_pos, size_t length)
 {
 	size_t j = *position;
 
@@ -75,7 +75,7 @@ void check_custom_chain(info_t *info, char *buffer, size_t *position, size_t sta
  *
  * Return: 1 if replaced, 0 otherwise
  */
-int custom_replace_alias(info_t *info)
+int custom_replace_alias(custom_shell_info_t *info)
 {
 	int i;
 	list_t *node;
@@ -83,7 +83,7 @@ int custom_replace_alias(info_t *info)
 
 	for (i = 0; i < 10; i++)
 	{
-		node = custom_node_starts_with(info->alias, info->argv[0], '=');
+		node = node_starts_with(info->alias, info->argv[0], '=');
 		if (!node)
 			return (0);
 		free(info->argv[0]);
@@ -101,7 +101,7 @@ int custom_replace_alias(info_t *info)
  *
  * Return: 1 if replaced, 0 otherwise
  */
-int custom_replace_vars(info_t *info)
+int custom_replace_vars(custom_shell_info_t *info)
 {
 	int i = 0;
 	list_t *node;

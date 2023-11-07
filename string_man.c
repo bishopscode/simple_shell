@@ -46,20 +46,20 @@ int custom_strcmp(char *str1, char *str2)
 
 /**
  * custom_starts_with - checks if a string starts with a given prefix
- * @str: the string to search
- * @prefix: the prefix to find
+ * @haystack: the string to search
+ * @needle: the prefix to find
  *
  * Return: a pointer to the character after the prefix in the string or NULL
  */
-char *custom_starts_with(const char *str, const char *prefix)
+char *custom_starts_with(const char *haystack, const char *needle)
 {
-	while (*prefix)
+	while (*needle)
 	{
-		if (*prefix++ != *str++)
+		if (*needle++ != *haystack++)
 			return (NULL);
 	}
 
-	return ((char *)str);
+	return ((char *)haystack);
 }
 
 /**

@@ -1,13 +1,13 @@
 #include "my_shell.h"
 
 /**
- * custom_copy_string - copies a string
+ * custom_strcpy - copies a string
  * @destination: the destination
  * @source: the source
  *
  * Return: pointer to the destination
  */
-char *custom_copy_string(char *destination, char *source)
+char *custom_strcpy(char *destination, char *source)
 {
 	int i = 0;
 
@@ -23,12 +23,12 @@ char *custom_copy_string(char *destination, char *source)
 }
 
 /**
- * custom_duplicate_string - duplicates a string
+ * custom_strdup - duplicates a string
  * @str: the string to duplicate
  *
  * Return: pointer to the duplicated string
  */
-char *custom_duplicate_string(const char *str)
+char *custom_strdup(const char *str)
 {
 	int length = 0;
 	char *result;
@@ -46,12 +46,12 @@ char *custom_duplicate_string(const char *str)
 }
 
 /**
- * custom_print_string - prints an input string
+ * custom_puts - prints an input string
  * @str: the string to be printed
  *
  * Return: Nothing
  */
-void custom_print_string(char *str)
+void custom_puts(char *str)
 {
 	int i = 0;
 
@@ -59,29 +59,29 @@ void custom_print_string(char *str)
 		return;
 	while (str[i] != '\0')
 	{
-		custom_output_char(str[i]);
+		custom_putchar(str[i]);
 		i++;
 	}
 }
 
 /**
- * custom_output_char - writes the character c to stdout
+ * custom_putchar - writes the character c to stdout
  * @character: The character to print
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
  */
-int custom_output_char(char character)
+int custom_putchar(char c)
 {
 	static int i;
-	static char buffer[WRITE_BUFFER_SIZE];
+	static char buf[WRITE_BUF_SIZE];
 
-	if (character == BUFFER_FLUSH || i >= WRITE_BUFFER_SIZE)
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
 	{
-		write(1, buffer, i);
+		write(1, buf, i);
 		i = 0;
 	}
-	if (character != BUFFER_FLUSH)
-		buffer[i++] = character;
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
 	return (1);
 }

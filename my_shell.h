@@ -1,5 +1,5 @@
-#ifndef MY_SHELL_H_
-#define MY_SHELL_H_
+#ifndef my_shell_h_
+#define my_shell_h_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,21 +37,21 @@
 extern char **environ;
 
 /**
- * struct custom_liststr - singly linked list
- * @num: the number field
+ * struct liststr - singly linked list
+ * @num: the number field of the node
  * @str: a string
- * @next: points to the next node
+ * @next: pointing to the next node
  */
-typedef struct custom_liststr
+typedef struct liststr
 {
 	int num;
 	char *str;
-	struct custom_liststr *next;
-} custom_list_t;
+	struct liststr *next;
+} list_t;
 
 /**
- * struct custom_passinfo - contains pseudo-arguments to pass into a function,
- * allowing uniform prototype for function pointer struct
+ * struct passinfo - contains pseudo-arg to pass into a function,
+ * allows for uniform prototype for function ptr struct
  * @arg: a string generated from getline containing arguments
  * @argv: an array of strings generated from arg
  * @path: a string path for the current command
@@ -71,7 +71,7 @@ typedef struct custom_liststr
  * @readfd: the fd from which to read line input
  * @histcount: the history line number count
  */
-typedef struct custom_passinfo
+typedef struct passinfo
 {
 	char *arg;
 	char **argv;
@@ -81,65 +81,65 @@ typedef struct custom_passinfo
 	int err_num;
 	int linecount_flag;
 	char *fname;
-	custom_list_t *env;
-	custom_list_t *history;
-	custom_list_t *alias;
+	list_t *env;
+	list_t *history;
+	list_t *alias;
 	char **environ;
 	int env_changed;
 	int status;
 
-	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory management */
+	char **cmd_buf; /* ptr to cmd ; chain buffer, for mem management */
 	int cmd_buf_type; /* CMD_type ||, &&, ; */
 	int readfd;
 	int histcount;
-} custom_info_t;
+} custom_shell_info_t;
 
-#define CUSTOM_INFO_INIT \
+#define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
 	0, 0, 0}
 
 /**
- * struct custom_builtin - contains a custom builtin string and related function
+ * struct builtin - containing builtin string and related function
  * @type: the custom builtin command flag
  * @func: the function
  */
-typedef struct custom_builtin
+typedef struct builtin
 {
 	char *type;
-	int (*func)(custom_info_t *);
-} custom_builtin_table;
+	int (*func)(custom_shell_info_t *);
+} builtin_table;
 
-/* toem_shloop.c */
-int custom_shell_loop(custom_info_t *, char **);
-int custom_find_builtin(custom_info_t *);
-void custom_find_cmd(custom_info_t *);
-void custom_fork_cmd(custom_info_t *);
+/* toem_custom_shell_loop.c */
+int custom_hsh(custom_shell_info_t *, char **);
+int custom_find_builtin(custom_shell_info_t *);
+void custom_find_cmd(custom_shell_info_t *);
+void custom_fork_cmd(custom_shell_info_t *);
 
-/* toem_parser.c */
-int custom_is_cmd(custom_info_t *, char *);
+/* toem_custom_parser.c */
+int custom_is_cmd(custom_shell_info_t *, char *);
 char *custom_dup_chars(char *, int, int);
-char *custom_find_path(custom_info_t *, char *, char *);
+char *custom_find_path(custom_shell_info_t *, char *, char *);
 
 /* loophsh.c */
-int custom_loophsh(char **);
+int loophsh(char **);
 
-/* toem_errors.c */
+/* toem_errors_handling.c */
 void custom_eputs(char *);
-int custom_eputchar(int);
+int custom_eputchar(char);
 int custom_putfd(char c, int fd);
 int custom_putsfd(char *str, int fd);
 
-/* toem_string.c */
+/* toem_string_man.c */
 int custom_strlen(char *);
 int custom_strcmp(char *, char *);
 char *custom_starts_with(const char *, const char *);
 char *custom_strcat(char *, char *);
 
-/* toem_string1.c */
+/* toem_string_man1.c */
 char *custom_strcpy(char *, char *);
 char *custom_strdup(const char *);
 void custom_puts(char *);
-int custom_putchar(int);
+int custom_putchar(char);
 
 /* toem_string_manipulations.c */
 char *custom_strncpy(char *, char *, int);
@@ -185,49 +185,49 @@ ssize_t custom_get_input(custom_shell_info_t *);
 int custom_getline(custom_shell_info_t *, char **, size_t *);
 void custom_sigintHandler(int);
 
-/* toem_getinfo.c */
+/* toem_info.c */
 void custom_clear_info(custom_shell_info_t *);
 void custom_set_info(custom_shell_info_t *, char **);
 void custom_free_info(custom_shell_info_t *, int);
 
-/* toem_environ.c */
+/* toem_environment_manager.c */
 char *custom_getenv(custom_shell_info_t *, const char *);
 int custom_myenv(custom_shell_info_t *);
 int custom_mysetenv(custom_shell_info_t *);
 int custom_myunsetenv(custom_shell_info_t *);
 int custom_populate_env_list(custom_shell_info_t *);
 
-/* toem_getenv.c */
+/* toem_environment.c */
 char **custom_get_environ(custom_shell_info_t *);
-int custom_unsetenv(custom_info_t *, char *);
-int custom_setenv(custom_info_t *, char *, char *);
+int custom_unsetenv(custom_shell_info_t *, char *);
+int custom_setenv(custom_shell_info_t *, char *, char *);
 
 /* toem_history.c */
-char *custom_get_history_file(custom_info_t *info);
-int custom_write_history(custom_info_t *info);
-int custom_read_history(custom_info_t *info);
-int custom_build_history_list(custom_info_t *info, char *buf, int linecount);
-int custom_renumber_history(custom_info_t *info);
+char *custom_get_history_file(custom_shell_info_t *info);
+int custom_write_history(custom_shell_info_t *info);
+int custom_read_history(custom_shell_info_t *info);
+int custom_build_history_list(custom_shell_info_t *info, char *buf, int linecount);
+int custom_renumber_history(custom_shell_info_t *info);
 
-/* toem_lists.c */
-custom_list_t *add_node(custom_list_t **, const char *, int);
-custom_list_t *add_node_end(custom_list_t **, const char *, int);
-size_t print_list_str(const custom_list_t *);
-int delete_node_at_index(custom_list_t **, unsigned int);
-void free_list(custom_list_t **);
+/* toem_custom_list.c */
+list_t *add_node(list_t **, const char *, int);
+list_t *add_node_end(list_t **, const char *, int);
+size_t print_list_str(const list_t *);
+int delete_node_at_index(list_t **, unsigned int);
+void free_list(list_t **);
 
-/* toem_lists1.c */
-size_t list_len(const custom_list_t *);
-char **list_to_strings(custom_list_t *);
-size_t print_list(const custom_list_t *);
-custom_list_t *node_starts_with(custom_list_t *, char *, char);
-ssize_t get_node_index(custom_list_t *, custom_list_t *);
+/* toem_custom_lists2.c */
+size_t list_len(const list_t *);
+char **list_to_strings(list_t *);
+size_t print_list(const list_t *);
+list_t *node_starts_with(list_t *, char *, char);
+ssize_t get_node_index(list_t *, list_t *);
 
-/* toem_vars.c */
-int custom_is_chain(custom_info_t *, char *, size_t *);
-void custom_check_chain(custom_info_t *, char *, size_t *, size_t, size_t);
-int custom_replace_alias(custom_info_t *);
-int custom_replace_vars(custom_info_t *);
+/* toem_chaining.c */
+int custom_is_chain(custom_shell_info_t *, char *, size_t *);
+void custom_check_chain(custom_shell_info_t *, char *, size_t *, size_t, size_t);
+int custom_replace_alias(custom_shell_info_t *);
+int custom_replace_vars(custom_shell_info_t *);
 int custom_replace_string(char **, char *);
 
 #endif
