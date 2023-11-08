@@ -139,6 +139,7 @@ int replace_vars(custom_shell_info_t *info)
 	return (0);
 }
 
+
 /**
  * replace_string - replaces string
  * @old: address of old string

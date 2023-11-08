@@ -1,4 +1,4 @@
-#include "my_shell.h"
+#include "shell.h"
 
 /**
  * hsh - main shell loop
@@ -26,7 +26,7 @@ int hsh(custom_shell_info_t *info, char **av)
 			if (builtin_ret == -1)
 				find_cmd(info);
 		}
-		else if (interactive(info))
+		else if (custom_interactive(info))
 			_putchar('\n');
 		free_info(info, 0);
 	}
@@ -44,7 +44,7 @@ int hsh(custom_shell_info_t *info, char **av)
 }
 
 /**
- * find_builtin - finds a builtin command
+ * find_builtin - finding a builtin command
  * @info: the parameter & return info struct
  *
  * Return: -1 if builtin not found,
@@ -52,7 +52,7 @@ int hsh(custom_shell_info_t *info, char **av)
  *			1 if builtin found but not successful,
  *			-2 if builtin signals exit()
  */
-int find_builtin(info_t *info)
+int find_builtin(custom_shell_info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
@@ -78,7 +78,7 @@ int find_builtin(info_t *info)
 }
 
 /**
- * find_cmd - finds a command in PATH
+ * find_cmd - finding a command in PATH
  * @info: the parameter & return info struct
  *
  * Return: void
@@ -145,7 +145,7 @@ void fork_cmd(custom_shell_info_t *info)
 				exit(126);
 			exit(1);
 		}
-		/* TODO: PUT ERROR FUNCTION */
+		/* TODO: PUT ERROR FUNC */
 	}
 	else
 	{

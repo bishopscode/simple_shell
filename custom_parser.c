@@ -30,7 +30,7 @@ int custom_is_cmd(custom_shell_info_t *info, char *path)
  *
  * Return: pointer to new buffer
  */
-char *dup_chars(char *pathstr, int start, int stop)
+char *custom_dup_chars(char *pathstr, int start, int stop)
 {
 	static char buf[1024];
 	int i = 0, k = 0;
