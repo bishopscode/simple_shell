@@ -74,7 +74,7 @@ char *custom_find_path(custom_shell_info_t *info, char *pathstr, char *cmd)
 				_strcat(path, "/");
 				_strcat(path, cmd);
 			}
-			if (is_cmd(info, path))
+			if (custom_is_cmd(info, path))
 				return (path);
 			if (!pathstr[i])
 				break;
