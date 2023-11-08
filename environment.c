@@ -1,9 +1,9 @@
 #include "my_shell.h"
 
 /**
- * custom_get_environ - returns the string array copy of our environ
+ * get_environ - returns the str arr copy of our environ
  * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
+ *          constant func prototype.
  * Return: Always 0
  */
 char **get_environ(custom_shell_info_t *info)
@@ -18,13 +18,13 @@ char **get_environ(custom_shell_info_t *info)
 }
 
 /**
- * custom_unsetenv - Remove an environment variable
+ * _unsetenv - Removes an environment var
  * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  *  Return: 1 on delete, 0 otherwise
- * @var: the string env var property
+ * @var: the str env var property
  */
-int custom_unsetenv(custom_shell_info_t *info, char *var)
+int _unsetenv(custom_shell_info_t *info, char *var)
 {
 	list_t *node = info->env;
 	size_t i = 0;
@@ -50,7 +50,7 @@ int custom_unsetenv(custom_shell_info_t *info, char *var)
 }
 
 /**
- * custom_setenv - Initialize a new environment variable,
+ * _setenv - Initialize a new environment variable,
  *             or modify an existing one
  * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
@@ -58,7 +58,7 @@ int custom_unsetenv(custom_shell_info_t *info, char *var)
  * @value: the string env var value
  *  Return: Always 0
  */
-int custom_setenv(custom_shell_info_t *info, char *var, char *value)
+int _setenv(custom_shell_info_t *info, char *var, char *value)
 {
 	char *buf = NULL;
 	list_t *node;
@@ -67,12 +67,12 @@ int custom_setenv(custom_shell_info_t *info, char *var, char *value)
 	if (!var || !value)
 		return (0);
 
-	buf = malloc(custom_strlen(var) + custom_strlen(value) + 2);
+	buf = malloc(_strlen(var) + _strlen(value) + 2);
 	if (!buf)
 		return (1);
-	custom_strcpy(buf, var);
-	custom_strcat(buf, "=");
-	custom_strcat(buf, value);
+	_strcpy(buf, var);
+	_strcat(buf, "=");
+	_strcat(buf, value);
 	node = info->env;
 	while (node)
 	{
@@ -90,4 +90,4 @@ int custom_setenv(custom_shell_info_t *info, char *var, char *value)
 	free(buf);
 	info->env_changed = 1;
 	return (0);
-}
+}}
