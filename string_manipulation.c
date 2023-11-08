@@ -1,90 +1,74 @@
 #include "my_shell.h"
 
 /**
- * custom_strncpy - Copy a string to another string with a specified length.
- * @destination: The destination string.
- * @source: The source string.
- * @length: The maximum number of characters to copy.
- * 
- * @Return: The pointer to the destination string.
+ **_strncpy - copies a str
+ *@dest: the destination string to be copied to
+ *@src: the source string
+ *@n: the amount of characters to be copied
+ *Return: the concatenated string
  */
-char *custom_strncpy(char *destination, char *source, int length)
+char *_strncpy(char *dest, char *src, int n)
 {
-    int source_index, destination_index;
-    char *result = destination;
+	int i, j;
+	char *s = dest;
 
-    source_index = 0;
-    while (source[source_index] != '\0' && source_index < length - 1)
-    {
-        destination[destination_index] = source[source_index];
-        source_index++;
-        destination_index++;
-    }
-
-    if (source_index < length)
-    {
-        int padding_index = source_index;
-        while (padding_index < length)
-        {
-            destination[padding_index] = '\0';
-            padding_index++;
-        }
-    }
-    
-    return (result);
+	i = 0;
+	while (src[i] != '\0' && i < n - 1)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	if (i < n)
+	{
+		j = i;
+		while (j < n)
+		{
+			dest[j] = '\0';
+			j++;
+		}
+	}
+	return (s);
 }
 
 /**
- * custom_strncat - Concatenate two strings with a specified length.
- * @first_string: The first string.
- * @second_string: The second string.
- * @length: The maximum number of bytes to use.
- * 
- * @Return: The pointer to the concatenated string.
+ **_strncat - concatenates two strings
+ *@dest: the first string
+ *@src: the second string
+ *@n: the amount of bytes to be maximally used
+ *Return: the concatenated string
  */
-char *custom_strncat(char *first_string, char *second_string, int length)
+char *_strncat(char *dest, char *src, int n)
 {
-    int first_index, second_index;
-    char *result = first_string;
+	int i, j;
+	char *s = dest;
 
-    first_index = 0;
-    while (first_string[first_index] != '\0')
-    {
-        first_index++;
-    }
-
-    second_index = 0;
-    while (second_string[second_index] != '\0' && second_index < length)
-    {
-        first_string[first_index] = second_string[second_index];
-        first_index++;
-        second_index++;
-    }
-
-    if (second_index < length)
-    {
-        first_string[first_index] = '\0';
-    }
-    
-    return (result);
+	i = 0;
+	j = 0;
+	while (dest[i] != '\0')
+		i++;
+	while (src[j] != '\0' && j < n)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	if (j < n)
+		dest[i] = '\0';
+	return (s);
 }
 
 /**
- * custom_strchr - Locate a character in a string.
- * @string: The string to be searched.
- * @character: The character to look for.
- * 
- * @Return: A pointer to the first occurrence of the character in the string.
+ **_strchr - locates a character in a string
+ *@s: the string to be parsed
+ *@c: the character to look for
+ *Return: (s) a pointer to the memory area s
  */
-char *custom_strchr(char *string, char character)
+char *_strchr(char *s, char c)
 {
-    do
-    {
-        if (*string == character) 
-        {
-            return (string);
-        }
-    } while (*string++ != '\0');
+	do {
+		if (*s == c)
+			return (s);
+	} while (*s++ != '\0');
 
-    return (NULL);
+	return (NULL);
 }

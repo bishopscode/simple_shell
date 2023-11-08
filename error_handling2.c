@@ -1,73 +1,74 @@
 #include "my_shell.h"
 
 /**
- * custom_erratoi - Convert a string to an integer.
- * @str: The string to be converted.
- * 
- * @Return: The converted integer, or -1 on error.
+ * _erratoi - converting a string to an integer
+ * @s: the string to be converted
+ * Return: 0 if no numbers in string, converted number otherwise
+ *       -1 on error
  */
-int custom_erratoi(char *str)
+int _erratoi(char *s)
 {
-    int index = 0;
-    unsigned long int result = 0;
+	int i = 0;
+	unsigned long int result = 0;
 
-    if (*str == '+')
-        str++;
-
-    for (index = 0; str[index] != '\0'; index++)
-    {
-        if (str[index] >= '0' && str[index] <= '9')
-        {
-            result *= 10;
-            result += (str[index] - '0');
-            if (result > INT_MAX)
-                return (-1);
-        } else 
-        {
-            return (-1);
-        }
-    }
-
-    return (result);
+	if (*s == '+')
+		s++;  /* TODO: why  this make main return 255? */
+	for (i = 0;  s[i] != '\0'; i++)
+	{
+		if (s[i] >= '0' && s[i] <= '9')
+		{
+			result *= 10;
+			result += (s[i] - '0');
+			if (result > INT_MAX)
+				return (-1);
+		}
+		else
+			return (-1);
+	}
+	return (result);
 }
 
 /**
- * custom_print_error - Print an error message.
- * @info: The parameter and return information structure.
- * @error_message: The error message to print.
+ * print_error - printing an error message
+ * @info: the parameter & return info struct
+ * @estr: string containing specified error type
+ * Return: 0 if no numbers in string, converted number otherwise
+ *        -1 on error
  */
-void custom_print_error(custom_shell_info_t *info, char *error_message)
+void print_error(custom_shell_info_t *info, char *estr)
 {
-    custom_eputs(info->program_name);
-    custom_eputs(": ");
-    custom_print_d(info->line_number, STDERR_FILENO);
-    custom_eputs(": ");
-    custom_eputs(info->command_name);
-    custom_eputs(": ");
-    custom_eputs(error_message);
+	_eputs(info->fname);
+	_eputs(": ");
+	print_d(info->line_count, STDERR_FILENO);
+	_eputs(": ");
+	_eputs(info->argv[0]);
+	_eputs(": ");
+	_eputs(estr);
 }
 
 /**
- * custom_print_d - Write an integer to the given file descriptor.
- * @integer: The integer to be written.
- * @fd: The file descriptor to write to.
+ * print_d - function prints a decimal 2 number (base 10)
+ * @input: the input
+ * @fd: the filedescriptor to write to
+ *
+ * Return: number of characters printed
  */
-int custom_print_d(int integer, int fd)
+int print_d(int input, int fd)
 {
-	int (*__putchar)(char) = custom_putchar;
+	int (*__putchar)(char) = _putchar;
 	int i, count = 0;
 	unsigned int _abs_, current;
 
 	if (fd == STDERR_FILENO)
-		__putchar = custom_eputchar;
-	if (integer < 0)
+		__putchar = _eputchar;
+	if (input < 0)
 	{
-		_abs_ = -integer;
+		_abs_ = -input;
 		__putchar('-');
 		count++;
 	}
 	else
-		_abs_ = integer;
+		_abs_ = input;
 	current = _abs_;
 	for (i = 1000000000; i > 1; i /= 10)
 	{
@@ -83,25 +84,26 @@ int custom_print_d(int integer, int fd)
 
 	return (count);
 }
+
 /**
- * custom_convert_numbers - Convert a number to a string in the given base.
- * @number: The number to be converted.
- * @base: The base for conversion.
- * @flags: Flags for conversion.
- * 
- * @Return: The converted string.
+ * convert_number - converter function, a clone of itoa
+ * @num: number
+ * @base: base
+ * @flags: argument flags
+ *
+ * Return: string
  */
-char *custom_convert_number(long int number, int base, int flags) 
+char *convert_number(long int num, int base, int flags)
 {
 	static char *array;
 	static char buffer[50];
 	char sign = 0;
 	char *ptr;
-	unsigned long n = number;
+	unsigned long n = num;
 
-	if (!(flags & CONVERT_UNSIGNED) && number < 0)
+	if (!(flags & CONVERT_UNSIGNED) && num < 0)
 	{
-		n = -number;
+		n = -num;
 		sign = '-';
 
 	}
@@ -109,8 +111,7 @@ char *custom_convert_number(long int number, int base, int flags)
 	ptr = &buffer[49];
 	*ptr = '\0';
 
-	do	
-    {
+	do	{
 		*--ptr = array[n % base];
 		n /= base;
 	} while (n != 0);
@@ -119,20 +120,21 @@ char *custom_convert_number(long int number, int base, int flags)
 		*--ptr = sign;
 	return (ptr);
 }
-/**
- * custom_remove_comments - Replace the first '#' character with '\0' in the string.
- * @buffer: The address of the string to modify.
- */
-void custom_remove_comments(char *buffer)
-{
-    int index;
 
-    for (index = 0; buffer[index] != '\0'; index++)
-    {
-        if (buffer[index] == '#' && (!index || buffer[index - 1] == ' '))
-        {
-            buffer[index] = '\0';
-            break;
-        }
-    }
+/**
+ * remove_comments - function replaces first instance of '#' with '\0'
+ * @buf: address of the string to modify
+ *
+ * Return: Always 0;
+ */
+void remove_comments(char *buf)
+{
+	int i;
+
+	for (i = 0; buf[i] != '\0'; i++)
+		if (buf[i] == '#' && (!i || buf[i - 1] == ' '))
+		{
+			buf[i] = '\0';
+			break;
+		}
 }

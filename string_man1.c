@@ -1,57 +1,57 @@
 #include "my_shell.h"
 
 /**
- * custom_strcpy - copies a string
- * @destination: the destination
- * @source: the source
+ * _strcpy - copies a string
+ * @dest: the destination
+ * @src: the source
  *
- * Return: pointer to the destination
+ * Return: pointer to destination
  */
-char *custom_strcpy(char *destination, char *source)
+char *_strcpy(char *dest, char *src)
 {
 	int i = 0;
 
-	if (destination == source || source == 0)
-		return (destination);
-	while (source[i])
+	if (dest == src || src == 0)
+		return (dest);
+	while (src[i])
 	{
-		destination[i] = source[i];
+		dest[i] = src[i];
 		i++;
 	}
-	destination[i] = 0;
-	return (destination);
+	dest[i] = 0;
+	return (dest);
 }
 
 /**
- * custom_strdup - duplicates a string
+ * _strdup - duplicating a string
  * @str: the string to duplicate
  *
  * Return: pointer to the duplicated string
  */
-char *custom_strdup(const char *str)
+char *_strdup(const char *str)
 {
 	int length = 0;
-	char *result;
+	char *ret;
 
 	if (str == NULL)
 		return (NULL);
 	while (*str++)
 		length++;
-	result = malloc(sizeof(char) * (length + 1));
-	if (!result)
+	ret = malloc(sizeof(char) * (length + 1));
+	if (!ret)
 		return (NULL);
 	for (length++; length--;)
-		result[length] = *--str;
-	return (result);
+		ret[length] = *--str;
+	return (ret);
 }
 
 /**
- * custom_puts - prints an input string
- * @str: the string to be printed
+ *_puts - prints an input string
+ *@str: the string to be printed
  *
  * Return: Nothing
  */
-void custom_puts(char *str)
+void _puts(char *str)
 {
 	int i = 0;
 
@@ -59,19 +59,19 @@ void custom_puts(char *str)
 		return;
 	while (str[i] != '\0')
 	{
-		custom_putchar(str[i]);
+		_putchar(str[i]);
 		i++;
 	}
 }
 
 /**
- * custom_putchar - writes the character c to stdout
- * @character: The character to print
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
  */
-int custom_putchar(char c)
+int _putchar(char c)
 {
 	static int i;
 	static char buf[WRITE_BUF_SIZE];

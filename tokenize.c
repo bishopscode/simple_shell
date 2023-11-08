@@ -1,97 +1,94 @@
 #include "my_shell.h"
 
 /**
- * custom_strtow - splits a string into words. Repeated delimiters are ignored
- * @input_string: the input string
- * @delimiter_string: the delimiter string
- *
+ * **strtow - splits a str into words. Repeat delimiters are ignored
+ * @str: the input string
+ * @d: the delimeter string
  * Return: a pointer to an array of strings, or NULL on failure
  */
-char **custom_strtow(char *input_string, char *delimiter_string)
+
+char **strtow(char *str, char *d)
 {
-	int i, j, k, m, num_tokens = 0;
-	char **tokens;
+	int i, j, k, m, numwords = 0;
+	char **s;
 
-	if (input_string == NULL || input_string[0] == 0)
+	if (str == NULL || str[0] == 0)
 		return (NULL);
-	if (!delimiter_string)
-		delimiter_string = " ";
-	for (i = 0; input_string[i] != '\0'; i++)
-		if (!is_custom_delimiter(input_string[i], delimiter_string) &&
-			(is_custom_delimiter(input_string[i + 1], delimiter_string) || !input_string[i + 1]))
-			num_tokens++;
+	if (!d)
+		d = " ";
+	for (i = 0; str[i] != '\0'; i++)
+		if (!custom_is_delim(str[i], d) && (custom_is_delim(str[i + 1], d) || !str[i + 1]))
+			numwords++;
 
-	if (num_tokens == 0)
+	if (numwords == 0)
 		return (NULL);
-	tokens = malloc((1 + num_tokens) * sizeof(char *));
-	if (!tokens)
+	s = malloc((1 + numwords) * sizeof(char *));
+	if (!s)
 		return (NULL);
-	for (i = 0, j = 0; j < num_tokens; j++)
+	for (i = 0, j = 0; j < numwords; j++)
 	{
-		while (is_custom_delimiter(input_string[i], delimiter_string))
+		while (custom_is_delim(str[i], d))
 			i++;
 		k = 0;
-		while (!is_custom_delimiter(input_string[i + k], delimiter_string) && input_string[i + k])
+		while (!custom_is_delim(str[i + k], d) && str[i + k])
 			k++;
-		tokens[j] = malloc((k + 1) * sizeof(char));
-		if (!tokens[j])
+		s[j] = malloc((k + 1) * sizeof(char));
+		if (!s[j])
 		{
 			for (k = 0; k < j; k++)
-				free(tokens[k]);
-			free(tokens);
+				free(s[k]);
+			free(s);
 			return (NULL);
 		}
 		for (m = 0; m < k; m++)
-			tokens[j][m] = input_string[i++];
-		tokens[j][m] = 0;
+			s[j][m] = str[i++];
+		s[j][m] = 0;
 	}
-	tokens[j] = NULL;
-	return (tokens);
+	s[j] = NULL;
+	return (s);
 }
 
 /**
- * custom_strtow2- splits a string into words using a specified delimiter
- * @input_string: the input string
- * @delimiter: the delimiter character
- *
+ * **strtow2 - splits a string into words
+ * @str: the input string
+ * @d: the delimeter
  * Return: a pointer to an array of strings, or NULL on failure
  */
-char **custom_strtow2(char *input_string, char delimiter)
+char **strtow2(char *str, char d)
 {
-	int i, j, k, m, num_tokens = 0;
-	char **tokens;
+	int i, j, k, m, numwords = 0;
+	char **s;
 
-	if (input_string == NULL || input_string[0] == 0)
+	if (str == NULL || str[0] == 0)
 		return (NULL);
-	for (i = 0; input_string[i] != '\0'; i++)
-		if ((input_string[i] != delimiter && input_string[i + 1] == delimiter) ||
-			(input_string[i] != delimiter && !input_string[i + 1]) || input_string[i + 1] == delimiter)
-			num_tokens++;
-
-	if (num_tokens == 0)
+	for (i = 0; str[i] != '\0'; i++)
+		if ((str[i] != d && str[i + 1] == d) ||
+		    (str[i] != d && !str[i + 1]) || str[i + 1] == d)
+			numwords++;
+	if (numwords == 0)
 		return (NULL);
-	tokens = malloc((1 + num_tokens) * sizeof(char *));
-	if (!tokens)
+	s = malloc((1 + numwords) * sizeof(char *));
+	if (!s)
 		return (NULL);
-	for (i = 0, j = 0; j < num_tokens; j++)
+	for (i = 0, j = 0; j < numwords; j++)
 	{
-		while (input_string[i] == delimiter && input_string[i] != delimiter)
+		while (str[i] == d && str[i] != d)
 			i++;
 		k = 0;
-		while (input_string[i + k] != delimiter && input_string[i + k] && input_string[i + k] != delimiter)
+		while (str[i + k] != d && str[i + k] && str[i + k] != d)
 			k++;
-		tokens[j] = malloc((k + 1) * sizeof(char));
-		if (!tokens[j])
+		s[j] = malloc((k + 1) * sizeof(char));
+		if (!s[j])
 		{
 			for (k = 0; k < j; k++)
-				free(tokens[k]);
-			free(tokens);
+				free(s[k]);
+			free(s);
 			return (NULL);
 		}
 		for (m = 0; m < k; m++)
-			tokens[j][m] = input_string[i++];
-		tokens[j][m] = 0;
+			s[j][m] = str[i++];
+		s[j][m] = 0;
 	}
-	tokens[j] = NULL;
-	return (tokens);
+	s[j] = NULL;
+	return (s);
 }

@@ -1,63 +1,62 @@
 #include "my_shell.h"
 
 /**
- * custom_memset - Fills memory with a constant byte.
- * @memory: The pointer to the memory area.
- * @byte: The byte to fill the memory with.
- * @size: The number of bytes to be filled.
- *
- * Return: (memory) a pointer to the filled memory area.
+ **_memset - fills memory with a constant byte
+ *@s: the pointer to the memory area
+ *@b: the byte to fill *s with
+ *@n: the amount of bytes to be filled
+ *Return: (s) a pointer to the memory area s
  */
-char *custom_memset(char *memory, char byte, unsigned int size)
+char *_memset(char *s, char b, unsigned int n)
 {
-    unsigned int i;
+	unsigned int i;
 
-    for (i = 0; i < size; i++)
-        memory[i] = byte;
-    return (memory);
+	for (i = 0; i < n; i++)
+		s[i] = b;
+	return (s);
 }
 
 /**
- * custom_ffree - Frees an array of strings.
- * @str_array: The array of strings to free.
+ * ffree - frees a string of strings
+ * @pp: string of strings
  */
-void custom_ffree(char **str_array)
+void ffree(char **pp)
 {
-    char **strings = str_array;
+	char **a = pp;
 
-    if (!str_array)
-        return;
-    while (*str_array)
-        free(*str_array++);
-    free(strings);
+	if (!pp)
+		return;
+	while (*pp)
+		free(*pp++);
+	free(a);
 }
 
 /**
- * custom_realloc - Reallocates a block of memory.
- * @old_memory: Pointer to the previously allocated block.
- * @old_size: Size of the previous block in bytes.
- * @new_size: Size of the new block in bytes.
+ * _realloc - reallocates a block of memory
+ * @ptr: pointer to previous malloc'ated block
+ * @old_size: byte size of previous block
+ * @new_size: byte size of new block
  *
- * Return: Pointer to the new block of memory.
+ * Return: pointer to da ol'block nameen.
  */
-void *custom_realloc(void *old_memory, unsigned int old_size, unsigned int new_size)
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-    char *new_memory;
+	char *p;
 
-    if (!old_memory)
-        return (malloc(new_size));
-    if (!new_size)
-        return (free(old_memory), NULL);
-    if (new_size == old_size)
-        return (old_memory);
+	if (!ptr)
+		return (malloc(new_size));
+	if (!new_size)
+		return (free(ptr), NULL);
+	if (new_size == old_size)
+		return (ptr);
 
-    new_memory = malloc(new_size);
-    if (!new_memory)
-        return (NULL);
+	p = malloc(new_size);
+	if (!p)
+		return (NULL);
 
-    old_size = old_size < new_size ? old_size : new_size;
-    while (old_size--)
-        new_memory[old_size] = ((char *)old_memory)[old_size];
-    free(old_memory);
-    return (new_memory);
+	old_size = old_size < new_size ? old_size : new_size;
+	while (old_size--)
+		p[old_size] = ((char *)ptr)[old_size];
+	free(ptr);
+	return (p);
 }
